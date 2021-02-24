@@ -1,11 +1,11 @@
 #!/bin/sh
-set -ex
+set -e
 
 if [ -z ${GRAALVM_VERSION} ] || [ -z ${FN_FDK_VERSION} ];  then
     echo "Define GRAALVM_VERSION and FN_FDK_VERSION before invoking ${0}" 
     echo "E.g.,"
-    echo "export GRAALVM_VERSION=21.0.0.2"
-    echo "export FN_FDK_VERSION=1.0.123"
+    echo "   export GRAALVM_VERSION=21.0.0.2"
+    echo "   export FN_FDK_VERSION=1.0.123"
     exit 1
 fi
 
