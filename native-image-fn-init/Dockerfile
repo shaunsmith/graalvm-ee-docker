@@ -22,7 +22,7 @@ RUN ["mvn", "package", "dependency:copy-dependencies", "-DincludeScope=runtime",
 ADD src src
 RUN ["mvn", "package"]
 
-FROM ##DOCKER_USER##/fn-java-native:##FN_FDK_VERSION##-##GRAALVM_EDITION##-##GRAALVM_VERSION## as build-native-image
+FROM ##REGISTRY##/fn-java-native:##FN_FDK_VERSION##-##GRAALVM_EDITION##-##GRAALVM_VERSION## as build-native-image
 WORKDIR /function
 COPY --from=build /function/target/*.jar target/
 

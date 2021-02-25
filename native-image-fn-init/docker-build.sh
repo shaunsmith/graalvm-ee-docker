@@ -16,8 +16,8 @@
 #
 set -e
 
-if [ -z "${FN_FDK_VERSION}" ] || [ -z "${GRAALVM_VERSION}" ] || [ -z "${DOCKER_USER}" ] ; then
-    echo "Define FN_FDK_VERSION, GRAALVM_VERSION, and DOCKER_USER before invoking ${0}" 
+if [ -z "${FN_FDK_VERSION}" ] || [ -z "${GRAALVM_VERSION}" ] || [ -z "${REGISTRY}" ] ; then
+    echo "Define FN_FDK_VERSION, GRAALVM_VERSION, and REGISTRY before invoking ${0}" 
     exit 1
 fi
 
@@ -31,20 +31,20 @@ cp Dockerfile Dockerfile.build
 sed -i.bak -e "s|##FN_FDK_VERSION##|${FN_FDK_VERSION}|" Dockerfile.build && rm Dockerfile.build.bak
 sed -i.bak -e "s|##GRAALVM_VERSION##|${GRAALVM_VERSION}|" Dockerfile.build && rm Dockerfile.build.bak
 sed -i.bak -e "s|##GRAALVM_EDITION##|${GRAALVM_EDITION}|" Dockerfile.build && rm Dockerfile.build.bak
-sed -i.bak -e "s|##DOCKER_USER##|${DOCKER_USER}|" Dockerfile.build && rm Dockerfile.build.bak
+sed -i.bak -e "s|##REGISTRY##|${REGISTRY}|" Dockerfile.build && rm Dockerfile.build.bak
 
 # Build init image packaging created Dockerfile (Java 8)
-docker build -t ${DOCKER_USER}/fn-java-native-init:${FN_FDK_VERSION}-${GRAALVM_EDITION}-${GRAALVM_VERSION} -f Dockerfile-init-image .
+docker build -t ${REGISTRY}/fn-java-native-init:${FN_FDK_VERSION}-${GRAALVM_EDITION}-${GRAALVM_VERSION} -f Dockerfile-init-image .
 
 # Create Dockerfile with current FDK build tag (Java 11)
 cp Dockerfile Dockerfile.build
 sed -i.bak -e "s|##FN_FDK_VERSION##|jdk11-${FN_FDK_VERSION}|" Dockerfile.build && rm Dockerfile.build.bak
 sed -i.bak -e "s|##GRAALVM_VERSION##|${GRAALVM_VERSION}|" Dockerfile.build && rm Dockerfile.build.bak
 sed -i.bak -e "s|##GRAALVM_EDITION##|${GRAALVM_EDITION}|" Dockerfile.build && rm Dockerfile.build.bak
-sed -i.bak -e "s|##DOCKER_USER##|${DOCKER_USER}|" Dockerfile.build && rm Dockerfile.build.bak
+sed -i.bak -e "s|##REGISTRY##|${REGISTRY}|" Dockerfile.build && rm Dockerfile.build.bak
 
 # Build init image packaging created Dockerfile (Java 11)
-docker build -t ${DOCKER_USER}/fn-java-native-init:jdk11-${FN_FDK_VERSION}-${GRAALVM_EDITION}-${GRAALVM_VERSION} -f Dockerfile-init-image .
+docker build -t ${REGISTRY}/fn-java-native-init:jdk11-${FN_FDK_VERSION}-${GRAALVM_EDITION}-${GRAALVM_VERSION} -f Dockerfile-init-image .
 rm Dockerfile.build
 
 
