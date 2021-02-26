@@ -17,10 +17,11 @@ fi
 export GRAALVM_EDITION="ee"
 version_elemements=(${GRAALVM_VERSION//./ })
 export GRAALVM_YEAR="${version_elemements[0]}"
+export OCI_REGION=$(echo "${OCI_REGION}" | tr '[:upper:]' '[:lower:]')
 export REGISTRY=${OCI_REGION}.ocir.io/${OCI_TENANCY}/graalvm
 
 # Set yum region for docker build scripts
-echo "-${OCI_REGION}" | awk '{print tolower($0)}' > ./etc/yum/vars/ociregion
+echo "-${OCI_REGION}" > ./etc/yum/vars/ociregion
 
 # Build the GraalVM JDK images
 docker build -f graalvm-ee-jdk.dockerfile \
